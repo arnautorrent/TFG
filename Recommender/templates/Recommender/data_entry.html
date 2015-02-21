@@ -12,13 +12,56 @@
 <div class="container">
     <div class="row">
         <div class="well bs-component col-lg-6 col-lg-offset-3">
-            <form class="form-horizontal">
+            <form id="formDataEntry" class="form-horizontal">
                 <fieldset>
-                    <legend>Data Entry</legend>
+                    <legend>Dades Personals</legend>
                     <div class="form-group">
-                        <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-                        <div class="col-lg-10">
-                            <input class="form-control" id="inputEmail" placeholder="Email" type="text">
+                        <label for="inputFirstName" class="col-lg-12 control-label text-align-left">Nom *</label>
+                        <div class="col-lg-12">
+                            <input class="form-control" id="inputFirstName" placeholder="Nom" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLastName" class="col-lg-12 control-label text-align-left">Cognoms *</label>
+                        <div class="col-lg-12">
+                            <input class="form-control" id="inputLastName" placeholder="Cognoms" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputBirthDate" class="col-lg-12 control-label text-align-left">Data Naixement *</label>
+                        <div class="col-lg-12">
+                            <input class="form-control" id="inputBirthDate" placeholder="dd/mm/aaaa" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputBirthPlace" class="col-lg-12 control-label text-align-left">LLoc de Naixement *</label>
+                        <div class="col-lg-12">
+                            <input class="form-control" id="inputBirthPlace" placeholder="LLoc de Naixement" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLivedPlaces" class="col-lg-12 control-label text-align-left">LLocs on has viscut i període</label>
+                        <div class="col-lg-12">
+                            <textarea form="formDataEntry" class="form-control" name="inputLivedPlaces" placeholder="Exemple: Barcelona-ES(1958-1983)"></textarea>
+                            <span class="help-block">Posa cada lloc on has viscut en una línia nova.</span>
+                        </div>
+                    </div>
+                </fieldset>
+                <hr />
+                <fieldset>
+                    <legend>Historia Musical</legend>
+                    <div class="form-group">
+                        <label for="inputFavouriteArtists" class="col-lg-12 control-label text-align-left">Artistes Preferits</label>
+                        <div class="col-lg-12">
+                            <textarea form="formDataEntry" class="form-control" name="inputFavouriteArtists" placeholder="Separar cada artista amb una coma."></textarea>
+                            <span class="help-block">Posa cada artista preferit en una línia nova.</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputFavouriteSongs" class="col-lg-12 control-label text-align-left">Cançons Preferides</label>
+                        <div class="col-lg-12">
+                            <textarea form="formDataEntry" class="form-control" name="inputFavouriteSongs" placeholder="Separar cada cançó amb una coma."></textarea>
+                            <span class="help-block">Posa cada cançó preferida en una línia nova.</span>
                         </div>
                     </div>
                 </fieldset>
