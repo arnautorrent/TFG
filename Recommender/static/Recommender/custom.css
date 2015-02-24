@@ -20,4 +20,28 @@
 .text-align-center{
     text-align: center !important;
 }
+.margin-20-top{
+    margin-top: 20px;
+}
+.margin-20-bottom{
+    margin-bottom: 20px;
+}
+.margin-20-left{
+    margin-left: 20px;
+}
+.margin-20-right{
+    margin-right: 20px;
+}
+.padding-20-top{
+    padding-top: 20px;
+}
+.padding-20-bottom{
+    padding-bottom: 20px;
+}
+.padding-20-left{
+    padding-left: 20px;
+}
+.padding-20-right{
+    padding-right: 20px;
+}
 /* ---------------------------- */
