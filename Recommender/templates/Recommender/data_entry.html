@@ -13,25 +13,25 @@
                     <div class="form-group">
                         <label for="inputFirstName" class="col-xs-12 control-label text-align-left">Nom *</label>
                         <div class="col-xs-12">
-                            <input class="form-control" id="inputFirstName" placeholder="Nom" type="text">
+                            <input class="form-control" id="inputFirstName" name="inputFirstName" placeholder="Nom" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputLastName" class="col-xs-12 control-label text-align-left">Cognoms *</label>
                         <div class="col-xs-12">
-                            <input class="form-control" id="inputLastName" placeholder="Cognoms" type="text">
+                            <input class="form-control" id="inputLastName" name="inputLastName" placeholder="Cognoms" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputBirthDate" class="col-xs-12 control-label text-align-left">Data Naixement *</label>
                         <div class="col-xs-12">
-                            <input class="form-control" id="inputBirthDate" placeholder="dd/mm/aaaa" type="text">
+                            <input class="form-control" id="inputBirthDate" name="inputBirthDate" placeholder="dd/mm/aaaa" type="text">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="inputBirthPlace" class="col-xs-12 control-label text-align-left">LLoc de Naixement *</label>
                         <div class="col-xs-12">
-                            <input class="form-control" id="inputBirthPlace" placeholder="LLoc de Naixement" type="text">
+                            <input class="form-control" id="inputBirthPlace" name="inputBirthPlace" placeholder="LLoc de Naixement" type="text">
                         </div>
                     </div>
                     <div class="form-group">
@@ -50,7 +50,7 @@
                         <div class="col-xs-12">
                         {%  for genre in genre_list %}
                             <div class="checkbox col-xs-4">
-                                <label><input type="checkbox" value="{{ genre.id }}">{{ genre.genre }}</label>
+                                <label><input name="inputFavouriteFlavour" type="checkbox" value="{{ genre.id }}">{{ genre.genre }}</label>
                             </div>
                         {% endfor %}
                         </div>
@@ -70,6 +70,7 @@
                         </div>
                     </div>
                 </fieldset>
+                <input type="submit" value="Submit">
             </form>
         </div>
     </div>
