@@ -1,14 +1,25 @@
 from django.shortcuts import render
-from Recommender.models import Users
+from Recommender.models import Users, Songs
 
 def SuccessfulEntry(request):
 
     # SANITIZE
 
+    #[PROVES AMB LA BDD]
+    all_songs = Songs.objects.all()
+    for song in all_songs:
+        if song.album == '':
+            song.album = None
+            song.save()
+
+
+
+
+
     # VALIDATE
 
     # FILL DB
-    fill_db(request)
+    #fill_db(request)
 
     #RENDER (Estem processant les teves dades...) -> Ens porta a una 3a pagina amb la playlist feta!
     template_name = 'Recommender/successful_entry.html'

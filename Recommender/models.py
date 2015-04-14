@@ -7,28 +7,23 @@ class MusicGenres(models.Model):
         return self.genre
 
 
+
 class Users(models.Model):
     first_name = models.CharField(max_length=200)
     last_name = models.CharField(max_length=200)
     birth_date = models.DateField()
     birth_place = models.CharField(max_length=200)
 
-    def __unicode__(self):
-        return self
 
 
 class Songs(models.Model):
   title = models.CharField(max_length = 200)
   artist = models.CharField(max_length = 200)
   album = models.CharField(max_length = 200)
-  genre = models.ForeignKey('MusicGenres')
-  year = models.IntegerField()
-  directory = models.CharField(max_length = 200)
-  tempo = models.IntegerField()
+  year = models.IntegerField(null = 'true')
+  tempo = models.IntegerField(default = 100, null = 'true')
   location = models.CharField(max_length = 200)
 
-  def __unicode__(self):
-      return self
 
 
 class Playlists(models.Model):
@@ -58,11 +53,12 @@ class Playlists(models.Model):
        return self
 
 
+
 class Forms(models.Model):
-    places_lived = models.CharField()
-    preferred_genres = models.CharField()
-    preferred_artists = models.CharField()
-    preferred_songs = models.CharField()
+    places_lived = models.CharField(max_length = 500)
+    preferred_genres = models.CharField(max_length = 500)
+    preferred_artists = models.CharField(max_length = 500)
+    preferred_songs = models.CharField(max_length = 500)
 
     def __unicode__(self):
         return self
