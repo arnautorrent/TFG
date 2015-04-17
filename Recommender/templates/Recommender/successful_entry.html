@@ -1,6 +1,12 @@
 {% include 'Recommender/elements/header.html' %}
 
 <body>
-<p>BENVINGUT, {{ method }}!</p>
-<p>Estem processant les teves dades ...</p>
+    <p class="text-align-center margin-20-top">BENVINGUT, {{ firstName }}!</p>
+    <p class="text-align-center">Estem processant les teves dades ...</p>
+
+    <script>
+        setTimeout(function() {
+            window.location.replace("/tfg");
+            }, 5000);
+    </script>
 </body>
