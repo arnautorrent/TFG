@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 # CONSTANTS CLASS:
 #
 # This class contains all the constraints of the project.
