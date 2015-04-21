@@ -1,10 +1,9 @@
 from django.shortcuts import render
 from Recommender.models import Users, Songs
-from Recommender.constants import Constants
 
 def SuccessfulEntry(request):
 
-    # TODO SANITIZE
+    # TODO Filtrar les dades (sanitize)
 
     # [PROVES AMB LA BDD]
     all_songs = Songs.objects.all()
@@ -14,7 +13,7 @@ def SuccessfulEntry(request):
             song.save()
 
 
-    # TODO VALIDATE
+    # TODO Validar les dades
 
     # FILL DB
     #fill_db(request)
