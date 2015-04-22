@@ -35,20 +35,25 @@ def MainAlgorithm(request):
     #
     # 1) Fem una llista amb els artistes preferits.
     # 2) Afegim els artistes de les cançons preferides.
-    # 3) Fem una llista d'artistes similars.
-    # 4) Fem una llista de "TOP SONGS" dels artistes similars.
+    # 3) Anem afegint les TOP SONGS de cada un d'aquests artistes fins a arribar al
+    #    límit marcat per percentage_of_direct_musical_data
     #
     #============================PREFERENCE FILTER 1=====================================
     #
-    # És la llista amb cançons preferides i cançons TOP dels artistes preferits
-    # i relacionats fins a arribar al percentage_of_direct_musical_data.
+    # Fins ara era agafar artistes similars i fer la TOP SONG.
+    #
+    # Aquí és on s'hauria de millorar. Podem fer cerques per tempo, ballable,
+    # estil, instruments, llengua, temàtica, ... (incorporar dades a la BDD).
     #
     #============================PREFERENCE FILTER 2=====================================
     #
-    # Aquí farem cerques de possibles cançons per regió/localització, tempo, ballable,
-    # estil, any, ... [[AQUÍ ÉS ON HI HA LA XIXA DE MILLORA DE L'ALGORITME]].
+    # Aquí selecciona dues cançons: una de la zona geogràfica i època. Cançons entre
+    # els 0 i 30 anys de vida (anys de rellevància). Mirem a quin país vivia durant
+    # aquestes edats. Que torni una cançó del gènere folk, i una del genere preferit
+    # de l'usuari o sense especificar gènere (tornarà una cançó popular de l'època).
     #
     #====================================================================================
+
 
     # RENDER la playlist
     template_name = 'Recommender/results.html'
