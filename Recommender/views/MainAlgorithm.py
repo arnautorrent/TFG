@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 
 from django.shortcuts import render
-import time
 from Recommender.models import Users, Songs
 from Recommender.constants import Constants
 from pyechonest import config, artist, song
@@ -9,17 +8,19 @@ from pyechonest import config, artist, song
 
 def MainAlgorithm(request):
     #TODO ADAPTACIÓ ALGORITME GUILLEM
-
     config.ECHO_NEST_API_KEY = Constants.ECHONEST_API_KEY #Poso la API key
+    request.session['user_id'] = 13
     playlist_length = 20
     percentage_of_direct_musical_data = 0.50
 
-    #===========================LOAD USER $ FORM INFORMATION=============================
+    #===========================LOAD USER & FORM INFORMATION=============================
     #
     # He de mirar l'ID, i agafar les dades que toquin de la BDD:
-    #   - Nom
-    #   - Data de naixement
-    #   - LLoc de naixement
+    user = {}
+    user['id'] = request.session['user_id']
+    user['name'] = Users.objects.get(id = request.session['user_id']).first_name
+    user['birth_date'] = Users.objects.get(id = request.session['user_id']).birth_date
+    user['birth_place'] = Users.objects.get(id = request.session['user_id']).birth_place
     #   - LLocs on ha viscut
     #   - Gèneres preferits
     #   - Cançons preferides
@@ -55,7 +56,7 @@ def MainAlgorithm(request):
     #====================================================================================
 
 
-    # RENDER la playlist
+    # RENDER la playlist†
     template_name = 'Recommender/results.html'
     context = {'playlist':'playlist'}
     return render(request,template_name, context)

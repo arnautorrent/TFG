@@ -32,6 +32,9 @@
 .margin-20-right{
     margin-right: 20px;
 }
+.no-margin{
+    margin: 0px;
+}
 .padding-20-top{
     padding-top: 20px;
 }
@@ -43,5 +46,8 @@
 }
 .padding-20-right{
     padding-right: 20px;
+}
+.no-padding{
+    padding: 0px;
 }
 /* ---------------------------- */

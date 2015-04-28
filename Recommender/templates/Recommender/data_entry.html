@@ -1,95 +1,141 @@
 {% include 'Recommender/elements/header.html' %}
 
 <body>
+    <div class="container">
+        <div class="row">
+            <div class="well bs-component col-xs-6 col-xs-offset-3 margin-20-top">
+                <form id="formDataEntry" class="form-horizontal" action="{% url 'Recommender:successful_entry'%}" method="post">
+                {% csrf_token %}
+                    <fieldset>
+                        <legend>Dades Personals</legend>
 
-<button onclick="button_action()">CLICK ME</button>
-
-<div class="container">
-    <div class="row">
-        <div class="well bs-component col-xs-6 col-xs-offset-3 margin-20-top">
-            <form id="formDataEntry" class="form-horizontal" action="{% url 'Recommender:successful_entry'%}" method="post">
-            {% csrf_token %}
-                <fieldset>
-                    <legend>Dades Personals</legend>
-                    <div class="form-group">
-                        <label for="inputFirstName" class="col-xs-12 control-label text-align-left">Nom *</label>
-                        <div class="col-xs-12">
-                            <input class="form-control" id="inputFirstName" name="inputFirstName" placeholder="Nom" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputLastName" class="col-xs-12 control-label text-align-left">Cognoms *</label>
-                        <div class="col-xs-12">
-                            <input class="form-control" id="inputLastName" name="inputLastName" placeholder="Cognoms" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputBirthDate" class="col-xs-12 control-label text-align-left">Data Naixement *</label>
-                        <div class="col-xs-12">
-                            <input class="form-control" id="inputBirthDate" name="inputBirthDate" placeholder="aaaa-mm-dd" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputBirthPlace" class="col-xs-12 control-label text-align-left">LLoc de Naixement *</label>
-                        <div class="col-xs-12">
-                            <input class="form-control" id="inputBirthPlace" name="inputBirthPlace" placeholder="LLoc de Naixement" type="text">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputLivedPlaces" class="col-xs-12 control-label text-align-left">LLocs on has viscut i període</label>
-                        <div class="col-xs-12">
-                            <span class="help-block">Posa cada lloc on has viscut en una línia nova, i el període entre parèntesis.</span>
-                            <textarea form="formDataEntry" class="form-control" name="inputLivedPlaces" placeholder="Exemple: Barcelona-ES(1958-1983)"></textarea>
-                        </div>
-                    </div>
-                </fieldset>
-                <hr />
-                <fieldset>
-                    <legend>Gustos Musicals</legend>
-                    <div class="form-group">
-                        <label for="inputFavouriteFlavour" class="col-xs-12 control-label text-align-left">Generes Preferits</label>
-                        <div class="col-xs-12">
-                        {%  for genre in genre_list %}
-                            <div class="checkbox col-xs-4">
-                                <label><input name="inputFavouriteFlavour" type="checkbox" value="{{ genre.id }}">{{ genre.genre }}</label>
+                        <div class="form-group">
+                            <label class="col-xs-12 control-label text-align-left">Nom *</label>
+                            <div class="col-xs-12">
+                                <input class="form-control" id="inputFirstName" name="inputFirstName" type="text">
                             </div>
-                        {% endfor %}
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputFavouriteArtists" class="col-xs-12 control-label text-align-left">Artistes Preferits</label>
-                        <div class="col-xs-12">
-                            <textarea form="formDataEntry" class="form-control" name="inputFavouriteArtists" placeholder="Exemple: Frank Sinatra"></textarea>
-                            <span class="help-block">Posa cada artista preferit en una línia nova.</span>
+
+                        <div class="form-group">
+                            <label class="col-xs-12 control-label text-align-left">Cognoms *</label>
+                            <div class="col-xs-12">
+                                <input class="form-control" id="inputLastName" name="inputLastName" type="text">
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputFavouriteSongs" class="col-xs-12 control-label text-align-left">Cançons Preferides</label>
-                        <div class="col-xs-12">
-                            <textarea form="formDataEntry" class="form-control" name="inputFavouriteSongs" placeholder="Exemple: That's Life (Frank Sinatra)"></textarea>
-                            <span class="help-block">Posa cada cançó preferida en una línia nova, i l'autor entre parèntesis si el coneixes.</span>
+
+                        <div class="form-group">
+                            <label class="col-xs-12 control-label text-align-left">Data Naixement *</label>
+                            <div class="col-xs-12">
+                                <input class="form-control" id="inputBirthDate" name="inputBirthDate" placeholder="AAAA-MM-DD" type="text">
+                            </div>
                         </div>
-                    </div>
-                </fieldset>
-                <input type="submit" value="Submit">
-            </form>
+
+                        <div class="form-group">
+                            <label for="inputBirthPlace" class="col-xs-12 control-label text-align-left">LLoc de Naixement *</label>
+                            <div class="col-xs-12">
+                                <input class="form-control" id="inputBirthPlace" name="inputBirthPlace" type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-6 control-label text-align-left">LLocs on has viscut</label>
+                            <label class="col-xs-3 control-label text-align-center">Any inici</label>
+                            <label class="col-xs-3 control-label text-align-center">Any fi</label>
+                            <div class="col-xs-12 no-padding" id="LivedPlace1">
+                                <div class="col-xs-6">
+                                    <input class="form-control" id="inputLivedPlace1" name="inputLivedPlace1" placeholder="Poble/ciutat" type="text" onfocus="showNextField(1,'#LivedPlace')">
+                                </div>
+                                <div class="col-xs-3">
+                                    <input class="form-control" id="inputStartYear1" name="inputStartYear1" type="text">
+                                </div>
+                                <div class="col-xs-3">
+                                    <input class="form-control" id="inputEndYear1" name="inputEndYear1" type="text">
+                                </div>
+                            </div>
+                            {%for i in array2to10%}
+                            <div class="col-xs-12 margin-20-top no-padding hidden" id="LivedPlace{{ i }}">
+                                <div class="col-xs-6">
+                                    <input class="form-control" id="inputLivedPlace{{ i }}" name="inputLivedPlace{{ i }}" placeholder="Poble/ciutat" type="text" onfocus="showNextField({{ i }},'#LivedPlace')">
+                                </div>
+                                <div class="col-xs-3">
+                                    <input class="form-control" id="inputStartYear{{ i }}" name="inputStartYear{{ i }}" type="text">
+                                </div>
+                                <div class="col-xs-3">
+                                    <input class="form-control" id="inputEndYear{{ i }}" name="inputEndYear{{ i }}" type="text">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </fieldset>
+
+                    <hr />
+
+                    <fieldset>
+                        <legend>Gustos Musicals</legend>
+                        <div class="form-group">
+                            <label for="inputFavouriteFlavour" class="col-xs-12 control-label text-align-left">Generes Preferits</label>
+                            <div class="col-xs-12">
+                            {% for genre in genre_list %}
+                                <div class="checkbox col-xs-4">
+                                    <label><input name="inputFavouriteFlavour" type="checkbox" value="{{ genre }}">{{ genre }}</label>
+                                </div>
+                            {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-12 control-label text-align-left">Artistes o Grups Preferits</label>
+                            <div class="col-xs-12 no-padding" id="FavouriteArtist1">
+                                <div class="col-xs-12">
+                                    <input class="form-control" id="inputFavouriteArtist1" name="inputFavouriteArtist1" placeholder="Artista/grup preferit" type="text" onfocus="showNextField(1,'#FavouriteArtist')">
+                                </div>
+                            </div>
+                            {%for i in array2to10%}
+                            <div class="col-xs-12 margin-20-top no-padding hidden" id="FavouriteArtist{{ i }}">
+                                <div class="col-xs-12">
+                                    <input class="form-control" id="inputFavouriteArtist{{ i }}" name="inputFavouriteArtist{{ i }}" placeholder="Artista/grup preferit" type="text" onfocus="showNextField({{ i }},'#FavouriteArtist')">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-xs-6 control-label text-align-left">Cançons Preferides</label>
+                            <label class="col-xs-6 control-label text-align-center">Artista o Grup</label>
+                            <div class="col-xs-12 no-padding" id="FavouriteSong1">
+                                <div class="col-xs-6">
+                                    <input class="form-control" id="inputFavouriteSong1" name="inputFavouriteSong1" placeholder="Nom de la cançó" type="text" onfocus="showNextField(1,'#FavouriteSong')">
+                                </div>
+                                <div class="col-xs-6">
+                                    <input class="form-control" id="inputArtistSong1" name="inputArtistSong1" type="text">
+                                </div>
+                            </div>
+                            {% for i in array2to10 %}
+                            <div class="col-xs-12 margin-20-top no-padding hidden" id="FavouriteSong{{ i }}">
+                                <div class="col-xs-6">
+                                    <input class="form-control" id="inputFavouriteSong{{ i }}" name="inputFavouriteSong{{ i }}" placeholder="Nom de la cançó" type="text" onfocus="showNextField({{ i }},'#FavouriteSong')">
+                                </div>
+                                <div class="col-xs-6">
+                                    <input class="form-control" id="inputArtistSong{{ i }}" name="inputArtistSong{{ i }}" type="text">
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </fieldset>
+                    <input type="submit" value="Submit">
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-function button_action()
-{
-    if ($("#inputBirthPlace").is (':visible')){
-        $("#inputBirthPlace").fadeOut('slow');
+    <script>
+    function showNextField(i,type){
+        var j = i + 1;
+        var identifier = type.concat(j);
+        $(identifier).removeClass('hidden');
     }
-    else
-    {
-        $("#inputBirthPlace").fadeIn('slow');
-    }
-
-};
-</script>
+    </script>
 
 </body>
 </html>
