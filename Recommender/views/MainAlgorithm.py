@@ -4,6 +4,7 @@ from django.shortcuts import render
 from Recommender.models import Users, Songs
 from Recommender.constants import Constants
 from pyechonest import config, artist, song
+import time
 
 
 def MainAlgorithm(request):
@@ -55,6 +56,7 @@ def MainAlgorithm(request):
     #
     #====================================================================================
 
+    time.sleep(4)
 
     # RENDER la playlist†
     template_name = 'Recommender/results.html'

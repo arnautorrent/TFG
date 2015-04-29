@@ -1,3 +1,3 @@
 from DataEntry import DataEntry
-from SuccessfulEntry import SuccessfulEntry
+from SaveData import SaveData
 from MainAlgorithm import MainAlgorithm
