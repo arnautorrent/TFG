@@ -1,13 +1,20 @@
 {% include 'Recommender/elements/header.html' %}
 
 <body>
-    <p class="text-align-center margin-20-top">BENVINGUT, {{ firstName }}!</p>
-    <p class="text-align-center">Estem processant les teves dades ...</p>
-    <div class="bs-component">
-        <div class="progress progress-striped active">
-                <div style="width: 0%" class="progress-bar"></div>
+{#    <p class="text-align-center margin-20-top">BENVINGUT, {{ firstName }}!</p>#}
+{#    <p class="text-align-center">Estem processant les teves dades ...</p>#}
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="alert alert-dismissible alert-warning margin-20-top">
+            <h4>BENVINGUT, {{ firstName }}!</h4>
+            <p>Estem processant les teves dades, no tardarem gaire estona a tenir la teva llista de reproducció apunt.</p>
+            <div class="bs-component">
+                <div class="progress progress-striped active progress-bar-format">
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
         </div>
     </div>
+
 
 
     <script>

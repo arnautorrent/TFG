@@ -8,6 +8,7 @@
 /* ------ EXAMPLE ------ */
 /* --------------------- */
 
+
 /* ------ COMMON CLASSES ------ */
 .text-align-left{
     text-align: left !important;
@@ -35,6 +36,18 @@
 .no-margin{
     margin: 0px;
 }
+.no-margin-top{
+    margin-top: 0px;
+}
+.no-margin-bottom{
+    margin-bottom: 0px;
+}
+.no-margin-left{
+    margin-left: 0px;
+}
+.no-margin-right{
+    margin-right: 0px;
+}
 .padding-20-top{
     padding-top: 20px;
 }
@@ -50,4 +63,12 @@
 .no-padding{
     padding: 0px;
 }
-/* ---------------------------- */
+/* --------------------- */
+
+
+/* ------ PROGRESS BAR ------ */
+.progress-bar-format{
+    margin: 10px 0px 0px 0px;
+    height: 20px;
+}
+/* --------------------- */
