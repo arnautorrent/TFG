@@ -10,7 +10,6 @@ import time
 def MainAlgorithm(request):
     #TODO ADAPTACIÓ ALGORITME GUILLEM
     config.ECHO_NEST_API_KEY = Constants.ECHONEST_API_KEY #Poso la API key
-    request.session['user_id'] = 13
     playlist_length = 20
     percentage_of_direct_musical_data = 0.50
 
@@ -20,7 +19,7 @@ def MainAlgorithm(request):
     user = {}
     user['id'] = request.session['user_id']
     user['name'] = Users.objects.get(id = request.session['user_id']).first_name
-    user['birth_date'] = Users.objects.get(id = request.session['user_id']).birth_date
+    user['birth_year'] = Users.objects.get(id = request.session['user_id']).birth_date.year
     user['birth_place'] = Users.objects.get(id = request.session['user_id']).birth_place
     #   - LLocs on ha viscut
     #   - Gèneres preferits
@@ -56,7 +55,7 @@ def MainAlgorithm(request):
     #
     #====================================================================================
 
-    time.sleep(4)
+    time.sleep(Constants.WAITING_TIME)
 
     # RENDER la playlist†
     template_name = 'Recommender/results.html'

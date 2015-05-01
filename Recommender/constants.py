@@ -9,5 +9,10 @@
 
 class Constants(object):
 
+    #PARAMETERS
+    NUMBER_OF_FIELDS = 10
+    NUMBER_OF_GENRES = 20
+    WAITING_TIME = 15
+
     #ECHONEST
     ECHONEST_API_KEY = 'AMGKSVA2GLTLS0LRM'

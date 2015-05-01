@@ -3,8 +3,27 @@
 <body>
     <p class="text-align-center margin-20-top">BENVINGUT, {{ firstName }}!</p>
     <p class="text-align-center">Estem processant les teves dades ...</p>
+    <div class="bs-component">
+        <div class="progress progress-striped active">
+                <div style="width: 0%" class="progress-bar"></div>
+        </div>
+    </div>
+
 
     <script>
-        window.location.replace("/tfg/results");
+    window.location.replace("/tfg/results");
+
+    var progressBar = $('.progress-bar'),
+    width = 0;
+
+    progressBar.width(width);
+
+    var interval = setInterval(function() {
+        width += 1;
+        progressBar.css('width', width + '%');
+        if (width >= 100) {
+            clearInterval(interval);
+        }
+    }, {{ wait }});
     </script>
 </body>
