@@ -13,11 +13,12 @@ class Users(models.Model):
 class Songs(models.Model):
   title = models.CharField(max_length = 200)
   artist = models.CharField(max_length = 200)
-  album = models.CharField(max_length = 200)
+  album = models.CharField(max_length = 200, null = 'true')
   year = models.IntegerField(null = 'true')
   tempo = models.IntegerField(default = 100, null = 'true')
-  location = models.CharField(max_length = 200)
-
+  location = models.CharField(max_length = 200, null = 'true')
+  genre = models.CharField(max_length = 200, null = 'true')
+  mbid = models.CharField(max_length = 200, null = 'true')
 
 
 class Forms(models.Model):

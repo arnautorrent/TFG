@@ -7,4 +7,5 @@ urlpatterns = patterns('',
     url(r'^$', views.DataEntry, name='data_entry'),
     url(r'^save_data$', views.SaveData, name='save_data'),
     url(r'^results', views.MainAlgorithm, name='results'),
+    url(r'^proves', views.Proves, name='proves')
 )

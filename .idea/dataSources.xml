@@ -4,7 +4,7 @@
     <data-source source="LOCAL" name="Django default" uuid="4dc362a5-8140-414e-9ed1-f603d8611008">
       <driver-ref>mysql</driver-ref>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://127.0.0.1:3306/tfg_v1</jdbc-url>
+      <jdbc-url>jdbc:mysql://127.0.0.1:3306/tfg</jdbc-url>
       <user-name>root</user-name>
       <user-password>df9bdf98df99df9edf9f</user-password>
       <libraries />
