@@ -2,4 +2,7 @@
 
 <body>
     <p class="text-align-center margin-20-top">RESULTATS, {{ firstName }}!</p>
+    {% for song in playlist %}
+        <p>{{ forloop.counter }} {{ song }}</p>
+    {% endfor %}
 </body>
