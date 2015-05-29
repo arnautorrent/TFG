@@ -1,8 +1,7 @@
 {% include 'Recommender/elements/header.html' %}
 
 <body>
-    <p class="text-align-center margin-20-top">RESULTATS, {{ firstName }}!</p>
     {% for song in playlist %}
-        <p>{{ forloop.counter }} {{ song }}</p>
+        <p class="margin-20-left">{{ forloop.counter }} {{ song }}</p>
     {% endfor %}
 </body>

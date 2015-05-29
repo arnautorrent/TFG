@@ -8,43 +8,39 @@ import time
 import re
 
 
+
 def MainAlgorithm(request):
     config.ECHO_NEST_API_KEY = Constants.ECHONEST_API_KEY #Poso la API key
     playlist = []
 
-    #===========================LOAD USER & FORM INFORMATION=============================
-    #
+    #LOAD USER INFORMATION:
     user = load_user_information(request)
-    #
-    #==============================FAVOURITE SONGS=======================================
-    #
+
+    #DIRECT SONGS:
     direct_songs(user,playlist)
-    #
-    #==================================ARTISTS===========================================
-    #
-    artist_songs(user,playlist)
-    #
-    #============================PREFERENCE FILTER 1=====================================
-    #
-    # Fins ara era agafar artistes similars i fer la TOP SONG.
-    #
-    # Aquí és on s'hauria de millorar. Podem fer cerques per tempo, ballable,
-    # estil, instruments, llengua, temàtica, ... (incorporar dades a la BDD).
-    #
-    #============================PREFERENCE FILTER 2=====================================
-    #
-    # Aquí selecciona dues cançons: una de la zona geogràfica i època. Cançons entre
-    # els 0 i 30 anys de vida (anys de rellevància). Mirem a quin país vivia durant
-    # aquestes edats. Que torni una cançó del gènere folk, i una del genere preferit
-    # de l'usuari o sense especificar gènere (tornarà una cançó popular de l'època).
-    #
-    #====================================================================================
 
+    if len(playlist) < (Constants.PLAYLIST_LENGTH * Constants.PERCENTAGE_OF_DIRECT_MUSICAL_DATA):
+        #ARTIST SONGS:
+        artist_songs(user,playlist)
+    elif Constants.PLAYLIST_LENGTH - len(playlist) > 2:
+        #SIMILARITY SONGS:
+        max_songs = Constants.PLAYLIST_LENGTH - len(playlist) - 2
+        similarity_songs(user,playlist,max_songs)
+        #INDIRECT SONGS:
+        indirect_songs(user,playlist)
+    elif 0 < Constants.PLAYLIST_LENGTH - len(playlist) <= 2:
+        #SIMILARITY SONGS:
+        max_songs = Constants.PLAYLIST_LENGTH - len(playlist)
+        similarity_songs(user,playlist,max_songs)
 
-    #Render Results:
+    #WAIT A BIT:
+    time.sleep(Constants.WAITING_TIME)
+
+    #RENDER RESULTS:
     template_name = 'Recommender/results.html'
     context = {'playlist' : playlist}
     return render(request,template_name, context)
+
 
 
 #================================================================================================#
@@ -98,15 +94,18 @@ def load_user_information(request):
 
 
 def direct_songs(user,playlist):
-    if len(user['songs']) < Constants.PLAYLIST_LENGTH:
+    max_songs = Constants.PLAYLIST_LENGTH
+    if len(user['songs']) <= Constants.PLAYLIST_LENGTH:
         list1 = user['songs']
     else:
-        list1 = preference_filter(user['songs'],user)
+        #En principi no hi entra mai. Voldria dir que l'usuari ens ha entrat més de 20 títols de cançons directament.
+        list1 = preference_filter(user['songs'],user,max_songs)
     add_to_playlist(list1,playlist)
 
 
 
 def artist_songs(user,playlist):
+    max_songs = Constants.PLAYLIST_LENGTH * Constants.PERCENTAGE_OF_DIRECT_MUSICAL_DATA - len(playlist)
     #TODO: Agafar temazos dels artistes preferits i similars a aquests.
     # Revisar si amb les cançons directes hem superat el % direct musical data.
     # 1) Fem una llista amb els artistes preferits.
@@ -117,7 +116,23 @@ def artist_songs(user,playlist):
 
 
 
-def preference_filter(song_list,user):
+def similarity_songs(user,playlist,max_songs):
+    #TODO: La selecció de cançons similars
+    #Agafem d'Echonest / MusicBrainz Artistes similars i Cançons similars.
+    #En fem una llista i la filtrem
+    #preference_filter(list,user,max_songs)
+    x = 'Hello World'
+
+
+
+def indirect_songs(user,playlist):
+    max_songs = 2
+    #TODO: La selecció de una cançó folk i una del genere triat
+    x = 'Hello World'
+
+
+
+def preference_filter(song_list,user,max_songs):
     #TODO: El filtre de preferència
     # Ordenem amb algun sistema de puntuació (mateix instrument, mateix tempo, mateix gènere, ...
     # i agafem les primeres.
