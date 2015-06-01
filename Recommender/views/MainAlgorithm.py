@@ -17,6 +17,7 @@ def MainAlgorithm(request):
     musicbrainzngs.set_useragent('life_soundtrack','0.1')
     musicbrainzngs.set_rate_limit('false')
     config.ECHO_NEST_API_KEY = Constants.ECHONEST_API_KEY #Poso la API key
+    config.CALL_TIMEOUT = 100
     playlist = []
 
     #LOAD USER INFORMATION:
@@ -27,7 +28,6 @@ def MainAlgorithm(request):
 
     if len(playlist) < (Constants.PLAYLIST_LENGTH * Constants.PERCENTAGE_OF_DIRECT_MUSICAL_DATA):
         #ARTIST SONGS:
-        time.sleep(60)
         artist_songs(user,playlist)
     elif Constants.PLAYLIST_LENGTH - len(playlist) > 2:
         #SIMILARITY SONGS:
@@ -95,8 +95,10 @@ def load_user_information(request):
         user['songs'].append(pair_song_artist)
     #Artistes preferits:
     user['artists'] = Forms.objects.get(id = user['id']).preferred_artists.split('//')
-    #TODO afegir artistes de les cançons preferides
-    #Retorno la variable usuari:
+    #Artistes de les cançons preferides:
+    for aux_song in user['songs']:
+        if aux_song['Artist']:
+            user['artists'].append(aux_song['Artist'])
     return user
 
 
@@ -108,16 +110,19 @@ def direct_songs(user,playlist):
             new_song = Songs.objects.filter(title = aux_song['Title'])
             if new_song:
                 if len(new_song) == 1:
+                    #La tinc a la BDD i és única:
                     new_song = new_song[0]
-                    add_database_song(new_song,playlist)
+                    add_to_playlist(new_song,playlist)
                 else:
+                    #La tinc a la BDD però no és única:
                     new_song = new_song[0] #TODO Filtrar amb preferències
-                    add_database_song(new_song,playlist)
+                    add_to_playlist(new_song,playlist)
             else:
+                #No la tinc a la BDD per tant la busco a Echonest:
                 new_song = song.search(title = aux_song['Title'])
                 new_song.sort(key = operator.attrgetter('song_hotttnesss'), reverse = True) #TODO Filtrar amb preferències
                 new_song = new_song[0]
-                add_echonest_song(new_song,playlist)
+                add_to_playlist(new_song,playlist)
     else:
         #En principi no hi entra mai. Voldria dir que l'usuari ens ha entrat més de 20 títols de cançons directament.
         playlist = preference_filter(user['songs'],user,max_songs)
@@ -125,24 +130,44 @@ def direct_songs(user,playlist):
 
 
 def artist_songs(user,playlist):
-    max_songs = Constants.PLAYLIST_LENGTH * Constants.PERCENTAGE_OF_DIRECT_MUSICAL_DATA - len(playlist)
+    max_songs = Constants.PLAYLIST_LENGTH * Constants.PERCENTAGE_OF_DIRECT_MUSICAL_DATA
+    list2 = []
     for aux_artist in user['artists']:
-        try:
-            #El tinc a la base de dades, n'agafo una cançó:
-            aux_artist_song = Songs.objects.filter(artist = aux_artist)
-            index = randint(1,len(aux_artist_song))
-            song = aux_artist_song[index-1] #TODO Es podria agafar la més rellevant i no una a l'atzar
-            add_database_song(song,playlist)
-        except:
-            #NO EL TINC A LA BDD. Agafo la cançó TOP d'Echonest:
-            a = artist.search(name = aux_artist)
-            a = a[0]
-            song_list = a.songs
-            song_list.sort(key = operator.attrgetter('song_hotttnesss'), reverse = True)
-            top_song = song_list[0]
-            add_echonest_song(top_song,playlist)
-        if len(playlist) == max_songs:
-            break
+        song_list = Songs.objects.filter(artist = aux_artist)
+        if song_list:
+            if len(song_list) < 5:
+                list2.append(song_list)
+            else:
+                #5 primeres
+                list2.append(song_list[0:5]) #TODO Es podria agafar la més rellevant i no una a l'atzar
+        else:
+            #No el tinc a la BDD, agafo la cançó TOP d'Echonest:
+            while True:
+                try:
+                    a = artist.search(name = aux_artist)
+                    a = a[0]
+                    song_list = a.songs
+                    if len(song_list) < 5:
+                        list2.append(song_list)
+                    else:
+                        song_list.sort(key = operator.attrgetter('song_hotttnesss'), reverse = True)
+                        list2.append(song_list[0:5])
+                    print a
+                    break
+                except:
+                    time.sleep(2)
+    count = 0
+    while len(playlist) < max_songs:
+        for s in list2:
+            if len(playlist) == max_songs:
+                break
+            try:
+                add_to_playlist(s[count],playlist)
+            except:
+                pass
+        count += 1
+
+
 
 
 
@@ -170,24 +195,15 @@ def preference_filter(song_list,user,max_songs):
 
 
 
-def add_database_song(song,playlist):
+def add_to_playlist(song,playlist):
     if not any(s['Title'] == song.title for s in playlist):
         new_song = {}
         new_song['Title'] = song.title
-        new_song['Artist'] = song.artist
-        new_song['Source'] = 'Database'
-        playlist.append(new_song)
-    else:
-        return
-
-
-
-def add_echonest_song(song,playlist):
-    if not any(s['Title'] == song.title for s in playlist):
-        new_song = {}
-        new_song['Title'] = song.title
-        new_song['Artist'] = song.artist_name
-        new_song['Source'] = 'Echonest'
+        try:
+            new_song['Artist'] = song.artist #Nomenclatura Base de Dades
+        except:
+            new_song['Artist'] = song.artist_name #Nomenclatura Echonest
+        print new_song['Title']
         playlist.append(new_song)
     else:
         return
