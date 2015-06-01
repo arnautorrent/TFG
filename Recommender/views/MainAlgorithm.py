@@ -5,6 +5,7 @@ from Recommender.models import Users, Forms, Songs
 from Recommender.constants import Constants
 from pyechonest import config, artist, song
 from random import randint
+from geopy.geocoders import Nominatim
 import time
 import re
 import operator
@@ -22,17 +23,16 @@ def MainAlgorithm(request):
 
     #LOAD USER INFORMATION:
     user = load_user_information(request)
-
     #DIRECT SONGS:
     direct_songs(user,playlist)
 
     if len(playlist) < (Constants.PLAYLIST_LENGTH * Constants.PERCENTAGE_OF_DIRECT_MUSICAL_DATA):
         #ARTIST SONGS:
         artist_songs(user,playlist)
-    elif Constants.PLAYLIST_LENGTH - len(playlist) > 2:
+    if Constants.PLAYLIST_LENGTH - len(playlist) > 2:
         #SIMILARITY SONGS:
-        max_songs = Constants.PLAYLIST_LENGTH - len(playlist) - 2
-        similarity_songs(user,playlist,max_songs)
+        #max_songs = Constants.PLAYLIST_LENGTH - len(playlist) - 2
+        #similarity_songs(user,playlist,max_songs)
         #INDIRECT SONGS:
         indirect_songs(user,playlist)
     elif 0 < Constants.PLAYLIST_LENGTH - len(playlist) <= 2:
@@ -152,7 +152,6 @@ def artist_songs(user,playlist):
                     else:
                         song_list.sort(key = operator.attrgetter('song_hotttnesss'), reverse = True)
                         list2.append(song_list[0:5])
-                    print a
                     break
                 except:
                     time.sleep(2)
@@ -169,8 +168,6 @@ def artist_songs(user,playlist):
 
 
 
-
-
 def similarity_songs(user,playlist,max_songs):
     #TODO: La selecció de cançons similars
     #Agafem d'Echonest / MusicBrainz Artistes similars i Cançons similars.
@@ -182,6 +179,35 @@ def similarity_songs(user,playlist,max_songs):
 
 def indirect_songs(user,playlist):
     max_songs = 2
+    year_at_30 = user['birth_year'] + 30
+    for p in user['lived_places']:
+        if (int(p['Start']) <= year_at_30) and (year_at_30 < int(p['End'])):
+            place_at_30 = p['City']
+    geolocator = Nominatim()
+    loc = geolocator.geocode(place_at_30)
+    max_lat = loc.latitude + 1
+    min_lat = loc.latitude - 1
+    max_lon = loc.longitude + 1
+    min_lon = loc.longitude - 1
+    while True:
+        try:
+            song1 = song.search(style="folk", min_latitude = min_lat, max_latitude = max_lat, min_longitude = min_lon,
+                        max_longitude = max_lon, rank_type = "familiarity", results = 20, artist_start_year_before = year_at_30)
+            song1 = song1[0] #TODO Filtrar amb preferències
+            add_to_playlist(song1,playlist)
+            break
+        except:
+            pass
+    #Segon temazo:
+    while True:
+        try:
+            song2 = song.search(min_latitude = min_lat, max_latitude = max_lat, min_longitude = min_lon,
+                        max_longitude = max_lon, rank_type = "familiarity", results = 20, artist_start_year_before = year_at_30)
+            song2 = song2[0] #TODO Filtrar amb preferències
+            add_to_playlist(song2,playlist)
+            break
+        except:
+            pass
     #TODO: La selecció de una cançó folk i una del genere triat
     x = 'Hello World'
 
@@ -189,7 +215,7 @@ def indirect_songs(user,playlist):
 
 def preference_filter(song_list,user,max_songs):
     #TODO: El filtre de preferència
-    # Ordenem amb algun sistema de puntuació (mateix instrument, mateix tempo, mateix gènere, ...
+    # Ordenem amb algun sistema de puntuació (mateix instrument, mateixa llengua, mateix gènere)
     # i agafem les primeres.
     x = 'Hello World'
 
