@@ -189,6 +189,7 @@ def indirect_songs(user,playlist):
     min_lat = loc.latitude - 1
     max_lon = loc.longitude + 1
     min_lon = loc.longitude - 1
+    #Primer un tema Folk
     while True:
         try:
             song1 = song.search(style="folk", min_latitude = min_lat, max_latitude = max_lat, min_longitude = min_lon,
@@ -198,7 +199,7 @@ def indirect_songs(user,playlist):
             break
         except:
             pass
-    #Segon temazo:
+    #Segon un TOP HIT:
     while True:
         try:
             song2 = song.search(min_latitude = min_lat, max_latitude = max_lat, min_longitude = min_lon,
@@ -208,8 +209,6 @@ def indirect_songs(user,playlist):
             break
         except:
             pass
-    #TODO: La selecció de una cançó folk i una del genere triat
-    x = 'Hello World'
 
 
 
