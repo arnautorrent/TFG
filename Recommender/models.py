@@ -19,6 +19,7 @@ class Songs(models.Model):
   location = models.CharField(max_length = 200, null = 'true')
   genre = models.CharField(max_length = 200, null = 'true')
   mbid = models.CharField(max_length = 200, null = 'true')
+  danceability = models.FloatField(default = 0)
 
 
 class Forms(models.Model):
