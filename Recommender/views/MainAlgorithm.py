@@ -84,7 +84,7 @@ def load_user_information(request):
     user['songs'] = []
     aux_songs = Forms.objects.get(id = user['id']).preferred_songs.split('//')
     for aux_song in aux_songs:
-        artist_regex = re.search('\([A-Za-z0-9\s\.\-,_]*\)$', aux_song)
+        artist_regex = re.search('\(.*\)$', aux_song)
         try :
             aux_artist = artist_regex.group(0)[1:-1]
         except :
@@ -118,10 +118,16 @@ def direct_songs(user,playlist):
                     add_to_playlist(new_song,playlist)
             else:
                 #No la tinc a la BDD per tant la busco a Echonest:
-                new_song = song.search(title = aux_song['Title'])
-                new_song.sort(key = operator.attrgetter('song_hotttnesss'), reverse = True) #TODO Filtrar amb preferències
-                new_song = new_song[0]
-                add_to_playlist(new_song,playlist)
+                while True:
+                    try:
+                        new_song = song.search(title = aux_song['Title'])
+                        new_song.sort(key = operator.attrgetter('song_hotttnesss'), reverse = True) #TODO Filtrar amb preferències
+                        if new_song:
+                            new_song = new_song[0]
+                            add_to_playlist(new_song,playlist)
+                        break
+                    except:
+                        time.sleep(2)
     else:
         #En principi no hi entra mai. Voldria dir que l'usuari ens ha entrat més de 20 títols de cançons directament.
         playlist = preference_filter(user['songs'],user,max_songs)
@@ -129,6 +135,7 @@ def direct_songs(user,playlist):
 
 
 def artist_songs(user,playlist):
+    print "entro a artistes"
     max_songs = Constants.PLAYLIST_LENGTH * Constants.PERCENTAGE_OF_DIRECT_MUSICAL_DATA
     list2 = []
     for aux_artist in user['artists']:
@@ -155,6 +162,7 @@ def artist_songs(user,playlist):
                 except:
                     time.sleep(2)
     count = 0
+    print "ja tinc la llista"
     while len(playlist) < max_songs:
         for s in list2:
             if len(playlist) == max_songs:
@@ -164,10 +172,12 @@ def artist_songs(user,playlist):
             except:
                 pass
         count += 1
+    print "surto d'artistes"
 
 
 
 def similarity_songs(user,playlist,max_songs):
+    print "entro a similarity"
     #TODO: La selecció de cançons similars
     max_songs = len(playlist) + max_songs
     artist_list = []
@@ -195,6 +205,7 @@ def similarity_songs(user,playlist,max_songs):
                 break
             except:
                 pass
+    print "tinc la llista"
     count = 0
     while len(playlist) < max_songs:
         for s in list3:
@@ -205,10 +216,12 @@ def similarity_songs(user,playlist,max_songs):
             except:
                 pass
         count += 1
+    print "surto de similarity"
 
 
 
 def indirect_songs(user,playlist):
+    print "entro a indirect"
     max_songs = 2
     place_at_30 = ''
     year_at_30 = user['birth_year'] + 30
@@ -234,6 +247,7 @@ def indirect_songs(user,playlist):
         except:
             pass
     #Segon un TOP HIT:
+    print "tinc tema folk"
     while True:
         try:
             song2 = song.search(min_latitude = min_lat, max_latitude = max_lat, min_longitude = min_lon,
@@ -243,6 +257,7 @@ def indirect_songs(user,playlist):
             break
         except:
             pass
+    print "tinc tema 20"
 
 
 
