@@ -232,17 +232,18 @@ def indirect_songs(user,playlist):
     if not place_at_30:
         place_at_30 = 'Spain'
     loc = geolocator.geocode(place_at_30)
-    max_lat = loc.latitude + 1
-    min_lat = loc.latitude - 1
-    max_lon = loc.longitude + 1
-    min_lon = loc.longitude - 1
+    max_lat = loc.latitude + 2
+    min_lat = loc.latitude - 2
+    max_lon = loc.longitude + 2
+    min_lon = loc.longitude - 2
     #Primer un tema Folk
     while True:
         try:
             song1 = song.search(style="folk", min_latitude = min_lat, max_latitude = max_lat, min_longitude = min_lon,
                         max_longitude = max_lon, rank_type = "familiarity", results = 20, artist_start_year_before = year_at_30)
-            song1 = song1[0] #TODO Filtrar amb preferències
-            add_to_playlist(song1,playlist)
+            if song1:
+                song1 = song1[0] #TODO Filtrar amb preferències
+                add_to_playlist(song1,playlist)
             break
         except:
             pass
@@ -252,8 +253,9 @@ def indirect_songs(user,playlist):
         try:
             song2 = song.search(min_latitude = min_lat, max_latitude = max_lat, min_longitude = min_lon,
                         max_longitude = max_lon, rank_type = "familiarity", results = 20, artist_start_year_before = year_at_30)
-            song2 = song2[0] #TODO Filtrar amb preferències
-            add_to_playlist(song2,playlist)
+            if song2:
+                song2 = song2[0] #TODO Filtrar amb preferències
+                add_to_playlist(song2,playlist)
             break
         except:
             pass
