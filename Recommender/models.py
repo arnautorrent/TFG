@@ -30,6 +30,3 @@ class Forms(models.Model):
     like_dancing = models.BooleanField(default = 'true')
     play_instrument = models.BooleanField(default = 'true')
     instrument = models.CharField(max_length = 200, null = 'true')
-
-    def __unicode__(self):
-        return self

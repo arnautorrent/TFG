@@ -6,8 +6,9 @@ from Recommender.models import Songs
 import requests
 
 def Proves(request):
-    print "Accessible només a usuaris autoritzats o Administradors"
-
+    #Extreure_tags_ID3(request)
+    #Extreure_tags_AcousticBrainz(request)
+    print 'Accessible només usuaris autoritzats'
 
 def Extreure_tags_AcousticBrainz(request):
     url_base = 'http://acousticbrainz.org/'
@@ -27,19 +28,35 @@ def Extreure_tags_AcousticBrainz(request):
 
 
 def Extreure_tags_ID3(request):
-    count = 0
-    for root, dirs, files in os.walk("/Users/arnau/Desktop/music", topdown=True):
+    for root, dirs, files in os.walk("/Users/arnau/Desktop/music_new", topdown=True):
         for name in files:
             fileName, fileExtension = os.path.splitext(name)
             if fileExtension == '.mp3':
-                count += 1
-                song = Songs.objects.get(id = count)
                 path = root + '/' + fileName + fileExtension
                 tags = MP3(path)
-                try :
-                    mbid = tags['UFID:http://musicbrainz.org'].data
-                    song.mbid = mbid
-                    song.save()
-                except :
-                    song.mbid = None
-                    song.save()
+                try:
+                    title = tags['TIT2'][0]
+                    try:
+                        song = Songs.objects.get(title = title)
+                    except:
+                        try:
+                            artist = tags['TPE1'][0]
+                        except:
+                            artist = "unknown"
+                        try:
+                            album = tags['TALB'][0]
+                        except:
+                            album = None
+                        try:
+                            date = tags['TDRC'][0].year
+                        except:
+                            date = None
+                        tempo = None
+                        try:
+                            mbid = tags['UFID:http://musicbrainz.org'].data
+                        except :
+                            mbid = None
+                        s = Songs(title = title, artist = artist, album = album, year = date, tempo = tempo, mbid = mbid)
+                        s.save()
+                except:
+                    print path
