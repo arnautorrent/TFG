@@ -8,7 +8,7 @@ import requests
 def Proves(request):
     #Extreure_tags_ID3(request)
     #Extreure_tags_AcousticBrainz(request)
-    print 'Accessible només usuaris autoritzats'
+    print 'ERROR: Accessible només usuaris autoritzats!'
 
 def Extreure_tags_AcousticBrainz(request):
     url_base = 'http://acousticbrainz.org/'
